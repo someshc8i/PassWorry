@@ -3,8 +3,16 @@ import pickle
 from Crypto.Cipher import AES
 
 
+def save_file(obj):
+    pickle.dump(obj, open("/usr/local/etc/keys.p", "wb"))
+
+
+def load_file():
+    return pickle.load(open("/usr/local/etc/keys.p", "rb"))
+
+
 def generateAESobj(key):
-    obj = AES.new(key, AES.MODE_CFB, 'This is an IV456')
+    obj = AES.new(key, AES.MODE_CFB, 'SomeshChaturvedi')
     return obj
 
 
@@ -31,7 +39,7 @@ class Key:
 
 def add(arguments):
     try:
-        KEYS = pickle.load(open("keys.p", "rb"))
+        KEYS = load_file()
     except:
         KEYS = []
         print("You need to enter security every time you add a new password.\
@@ -47,31 +55,34 @@ def add(arguments):
     password = generateAESobj(generate_key(key1)).encrypt(arguments.password)
     k = Key(arguments.key, password, arguments.description)
     KEYS.append(k)
-    pickle.dump(KEYS, open("keys.p", "wb"))
+    save_file(KEYS)
     return
 
 
 def show(arguments):
     try:
-        KEYS = pickle.load(open("keys.p", "rb"))
+        KEYS = load_file()
     except:
         print("You have no passwords saved. Use add command to save passwords")
+        return
     for key in KEYS:
         if str(key) == arguments.key:
             security_key = getpass("Enter security key:")
             password = generateAESobj(
                 generate_key(security_key)).decrypt(key.password)
             print("Password: " + password.decode("utf-8"))
-            print("Description: " + key.description)
+            if key.description:
+                print("Description: " + key.description)
             return
     print("No such key-password is saved.")
 
 
 def showall(arguments):
     try:
-        KEYS = pickle.load(open("keys.p", "rb"))
+        KEYS = load_file()
     except:
         print("You have no passwords saved. Use add command to save passwords")
+        return
     if len(KEYS) == 0:
         print("You have no passwords saved. Use add command to save passwords")
         return
@@ -83,9 +94,10 @@ def showall(arguments):
 
 def delete(arguments):
     try:
-        KEYS = pickle.load(open("keys.p", "rb"))
+        KEYS = load_file()
     except:
         print("You have no passwords saved. Use add command to save passwords")
+        return
     for i in range(len(KEYS)):
         if str(KEYS[i]) == arguments.key:
             confirmation = getpass("Are you sure you want to delete password \
@@ -93,7 +105,7 @@ def delete(arguments):
             if confirmation == 'y':
                 print(confirmation)
                 KEYS.pop(i)
-                pickle.dump(KEYS, open("keys.p", "wb"))
+                save_file(KEYS)
                 return
             return
     print("No such key-password is saved.")

@@ -1,5 +1,5 @@
 import argparse
-import commands
+from PassWorry import commands
 
 
 def add_parser(subparsers, func, help_txt, *args):
