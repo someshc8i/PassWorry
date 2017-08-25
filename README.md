@@ -1,5 +1,5 @@
 # PassWorry
-Passwords saving cli tool 
+Passwords saving cli tool
 
 ## Motivation
 No need to remember a lot many passwords or save them somewhere in system without any security.
@@ -19,21 +19,21 @@ Security key and key are different. Key is used to map password while security k
 ### add
 You'll be prompted for a security key. Keeping the security key same for all passwords is recommended.
 ```bash
-passworry add -k <key> -p <password> -d <description>
+sudo passworry add -k <key> -p <password> -d <description>
 ```
 
 ### show
 You'll be prompted for the scurity key you entered during addition of this password.
 ```bash
-passworry show -k <key>
+sudo passworry show -k <key>
 ```
 
 ### delete
 ```bash
-passworry delete -k <key>
+sudo passworry delete -k <key>
 ```
 
 ### showall
 ```bash
-passworry showall 
+sudo passworry showall
 ```
